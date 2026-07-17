@@ -1,0 +1,13 @@
+ADAPTIVE DETAILING WEBSITE
+
+This folder is ready to upload to a standard website host.
+
+Upload all three files together:
+1. index.html
+2. styles.css
+3. adaptive-detailing-logo.jpg
+
+Keep the filenames unchanged and keep all three files in the same folder.
+Set index.html as the website's home page if your hosting provider asks.
+
+No npm installation, database, or build command is required.

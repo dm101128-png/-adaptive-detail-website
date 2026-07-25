@@ -22,7 +22,7 @@
       <p class="eyebrow">Professional detailing · Irving, Texas</p>
       <h1>A better clean.<br><em>Down to every detail.</em></h1>
       <p class="hero-text">Professional products, careful work, and a finish that feels brand new. Visit our Irving shop or ask about mobile detailing.</p>
-      <div class="hero-actions"><a class="button button-primary" href="tel:8176778155">Call for an appointment <span>↗</span></a><a class="button button-mobile" href="https://clienthub.getjobber.com/hubs/b7b42075-b3cc-45ee-8e16-f01f09654a21/public/requests/4798904/new" target="_blank" rel="noreferrer">Request mobile service <span>↗</span></a><a class="text-link" href="#services">View services <span>↓</span></a></div>
+      <div class="hero-actions"><a class="button button-primary" href="tel:8176778155">Call for an appointment <span>↗</span></a><a class="button button-mobile" href="#mobile-request">Request mobile service <span>↓</span></a><a class="text-link" href="#services">View services <span>↓</span></a></div>
       <div class="hero-proof"><span>Professional products</span><span>Attention to detail</span><span>100% satisfaction</span></div>
     </div>
     <div class="hero-visual"><img class="hero-photo" src="1-Photo-1.jpg" alt="Freshly detailed classic Chevrolet at the Adaptive Detailing shop"><div class="blue-glow" aria-hidden="true"></div><p class="vertical-type">ADAPTIVE / DETAILING / IRVING TX</p></div>
@@ -73,8 +73,39 @@
         <div><span>03</span><strong>DFW convenience</strong><p>Request service across the Metroplex and share your address through our mobile form.</p></div>
         <div><span>04</span><strong>Appointment focused</strong><p>Reserved time means we can arrive prepared for your vehicle and selected service.</p></div>
       </div>
-      <a class="button button-primary" href="https://clienthub.getjobber.com/hubs/b7b42075-b3cc-45ee-8e16-f01f09654a21/public/requests/4798904/new" target="_blank" rel="noreferrer">Request mobile service <span>↗</span></a>
+      <a class="button button-primary" href="#mobile-request">Request mobile service <span>↓</span></a>
     </div>
+  </section>
+
+  <section class="mobile-booking section" id="mobile-request">
+    <div class="mobile-booking-intro">
+      <p class="eyebrow">Mobile service request</p>
+      <h2>Pick your<br>Saturday.</h2>
+      <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Saturday appointments are available after 1:00 PM. Send your details and we’ll contact you to confirm.</p>
+      <div class="booking-availability"><span></span><div><strong>Saturday availability</strong><small>Appointments from 1:00 PM onward</small></div></div>
+    </div>
+    <form class="mobile-booking-form" id="mobile-booking-form" action="https://formsubmit.co/adaptivedetailerving@gmail.com" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="_subject" value="New mobile detailing request — Adaptive Detailing">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_url" value="https://adaptivedetaildfw.vip/#mobile-request">
+      <input type="hidden" name="Preferred date" id="mobile-date">
+      <div class="field-row">
+        <label><span>Your name</span><input type="text" name="Name" autocomplete="name" placeholder="First and last name" required></label>
+        <label><span>Phone number</span><input type="tel" name="Phone" autocomplete="tel" placeholder="(817) 555-0123" required></label>
+      </div>
+      <label><span>Email address</span><input type="email" name="Email" autocomplete="email" placeholder="you@email.com" required></label>
+      <label><span>Type of job</span><select name="Service" required><option value="" selected disabled>Select a service</option><option>Basic Exterior Detail</option><option>Basic Interior Detail</option><option>Full Detail</option><option>Deluxe Detail</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Other / Not sure</option></select></label>
+      <fieldset class="booking-fieldset">
+        <legend>Preferred date</legend>
+        <p>Next 7 days · Saturday is available</p>
+        <div class="date-strip" id="mobile-date-strip" aria-label="Available dates"></div>
+      </fieldset>
+      <label><span>Preferred time</span><select name="Preferred time" required><option value="" selected disabled>Select a time</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option></select></label>
+      <label class="photo-upload"><span>Vehicle photo <small>Optional</small></span><input type="file" name="Vehicle photo" accept="image/*" capture="environment"><b>Take a photo or choose one from your phone</b></label>
+      <label><span>Anything else we should know? <small>Optional</small></span><textarea name="Notes" rows="4" placeholder="Vehicle, condition, service address, or special requests"></textarea></label>
+      <button class="button form-button" type="submit">Submit mobile request <span>↗</span></button>
+      <p class="form-note">No payment is collected here. We’ll contact you to confirm your appointment.</p>
+    </form>
   </section>
 
   <section class="specialty-services section" aria-labelledby="specialty-title">
@@ -117,7 +148,7 @@
       <p>Not ready to call? Send a few details and we’ll follow up to answer questions, recommend the right service, and discuss availability.</p>
       <aside class="mobile-request-card" aria-label="Mobile detailing request">
         <div><span>We come to you</span><h3>Need mobile detailing?</h3><p>Use our scheduling form to share your service address and request a job at your location.</p></div>
-        <a class="button button-mobile" href="https://clienthub.getjobber.com/hubs/b7b42075-b3cc-45ee-8e16-f01f09654a21/public/requests/4798904/new" target="_blank" rel="noreferrer">Request mobile service <span>↗</span></a>
+        <a class="button button-mobile" href="#mobile-request">Request mobile service <span>↑</span></a>
       </aside>
       <div class="inquiry-photo"><img src="10-Photo-10.jpg" alt="Professionally detailed blue vehicle interior" loading="lazy"></div>
     </div>
@@ -137,9 +168,44 @@
     </form>
   </section>
 
-  <section class="contact section" id="contact"><p class="eyebrow">Appointments available</p><h2>Ready for that<br><em>fresh-detail feeling?</em></h2><p>Call, text, send a general inquiry, or request mobile detailing at your location.</p><div class="contact-actions"><a class="button button-light" href="tel:8176778155">Call (817) 677-8155 <span>↗</span></a><a class="button button-outline" href="https://clienthub.getjobber.com/hubs/b7b42075-b3cc-45ee-8e16-f01f09654a21/public/requests/4798904/new" target="_blank" rel="noreferrer">Request mobile service <span>↗</span></a><a class="button button-outline" href="#inquiry">Send a message <span>↑</span></a></div><small>Irving, Texas · Shop &amp; mobile detailing</small></section>
+  <section class="contact section" id="contact"><p class="eyebrow">Appointments available</p><h2>Ready for that<br><em>fresh-detail feeling?</em></h2><p>Call, text, send a general inquiry, or request mobile detailing at your location.</p><div class="contact-actions"><a class="button button-light" href="tel:8176778155">Call (817) 677-8155 <span>↗</span></a><a class="button button-outline" href="#mobile-request">Request mobile service <span>↑</span></a><a class="button button-outline" href="#inquiry">Send a message <span>↑</span></a></div><small>Irving, Texas · Shop &amp; mobile detailing</small></section>
 
   <footer><a class="brand" href="#top"><img src="adaptive-detailing-logo.jpg" alt=""><span>Adaptive <b>Detailing</b></span></a><p>Mobile details · We come to you</p><p>© 2026 Adaptive Detailing</p></footer>
 </main>
+<script>
+  (function () {
+    const strip = document.getElementById("mobile-date-strip");
+    const dateInput = document.getElementById("mobile-date");
+    if (!strip || !dateInput) return;
+
+    const today = new Date();
+    today.setHours(12, 0, 0, 0);
+    const formatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+
+    for (let offset = 0; offset < 7; offset += 1) {
+      const date = new Date(today);
+      date.setDate(today.getDate() + offset);
+      const isSaturday = date.getDay() === 6;
+      const value = [
+        date.getFullYear(),
+        String(date.getMonth() + 1).padStart(2, "0"),
+        String(date.getDate()).padStart(2, "0")
+      ].join("-");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "booking-day" + (isSaturday ? " available selected" : "");
+      button.disabled = !isSaturday;
+      button.setAttribute("aria-pressed", String(isSaturday));
+      button.innerHTML = "<span>" + formatter.format(date) + "</span><strong>" + date.getDate() + "</strong><small>" + (isSaturday ? "Open" : "—") + "</small>";
+      if (isSaturday) {
+        dateInput.value = value;
+        button.addEventListener("click", function () {
+          dateInput.value = value;
+        });
+      }
+      strip.appendChild(button);
+    }
+  }());
+</script>
 </body>
 </html>

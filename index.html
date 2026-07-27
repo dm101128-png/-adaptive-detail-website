@@ -84,27 +84,30 @@
       <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Saturday appointments are available after 1:00 PM. Send your details and we’ll contact you to confirm.</p>
       <div class="booking-availability"><span></span><div><strong>Saturday availability</strong><small>Appointments from 1:00 PM onward</small></div></div>
     </div>
-    <form class="mobile-booking-form" id="mobile-booking-form" action="https://formsubmit.co/adaptivedetailerving@gmail.com" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="_subject" value="New mobile detailing request — Adaptive Detailing">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_url" value="https://adaptivedetaildfw.vip/#mobile-request">
-      <input type="hidden" name="Preferred date" id="mobile-date">
+    <form class="mobile-booking-form" id="mobile-booking-form" action="https://adaptive-detail-desk.dm101128.workers.dev/api/leads" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="source" value="adaptivedetaildfw.vip mobile request">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" hidden>
+      <input type="hidden" name="requestedDate" id="mobile-date">
       <div class="field-row">
-        <label><span>Your name</span><input type="text" name="Name" autocomplete="name" placeholder="First and last name" required></label>
-        <label><span>Phone number</span><input type="tel" name="Phone" autocomplete="tel" placeholder="(817) 555-0123" required></label>
+        <label><span>Your name</span><input type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
+        <label><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="(817) 555-0123" required></label>
       </div>
-      <label><span>Email address</span><input type="email" name="Email" autocomplete="email" placeholder="you@email.com" required></label>
-      <label><span>Type of job</span><select name="Service" required><option value="" selected disabled>Select a service</option><option>Basic Exterior Detail</option><option>Basic Interior Detail</option><option>Full Detail</option><option>Deluxe Detail</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Other / Not sure</option></select></label>
+      <label><span>Email address</span><input type="email" name="email" autocomplete="email" placeholder="you@email.com" required></label>
+      <div class="field-row">
+        <label><span>Service address</span><input type="text" name="address" autocomplete="street-address" placeholder="Street, city, ZIP" required></label>
+        <label><span>Vehicle</span><input type="text" name="vehicle" placeholder="Year, make, and model" required></label>
+      </div>
+      <label><span>Type of job</span><select name="requestedService" required><option value="" selected disabled>Select a service</option><option>Basic Exterior Detail</option><option>Basic Interior Detail</option><option>Full Detail</option><option>Deluxe Detail</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Other / Not sure</option></select></label>
       <fieldset class="booking-fieldset">
         <legend>Preferred date</legend>
         <p>Next 7 days · Saturday is available</p>
         <div class="date-strip" id="mobile-date-strip" aria-label="Available dates"></div>
       </fieldset>
-      <label><span>Preferred time</span><select name="Preferred time" required><option value="" selected disabled>Select a time</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option></select></label>
-      <label class="photo-upload"><span>Vehicle photo <small>Optional</small></span><input type="file" name="Vehicle photo" accept="image/*" capture="environment"><b>Take a photo or choose one from your phone</b></label>
-      <label><span>Anything else we should know? <small>Optional</small></span><textarea name="Notes" rows="4" placeholder="Vehicle, condition, service address, or special requests"></textarea></label>
+      <label><span>Preferred time</span><select name="requestedTime" required><option value="" selected disabled>Select a time</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option></select></label>
+      <label class="photo-upload"><span>Vehicle photo <small>Optional</small></span><input type="file" name="photo" accept="image/*" capture="environment"><b>Take a photo or choose one from your phone</b></label>
+      <label><span>Anything else we should know? <small>Optional</small></span><textarea name="notes" rows="4" placeholder="Vehicle condition, access instructions, or special requests"></textarea></label>
       <button class="button form-button" type="submit">Submit mobile request <span>↗</span></button>
-      <p class="form-note">No payment is collected here. We’ll contact you to confirm your appointment.</p>
+      <p class="form-note" aria-live="polite">No payment is collected here. We’ll contact you to confirm your appointment.</p>
     </form>
   </section>
 
@@ -152,19 +155,22 @@
       </aside>
       <div class="inquiry-photo"><img src="10-Photo-10.jpg" alt="Professionally detailed blue vehicle interior" loading="lazy"></div>
     </div>
-    <form class="inquiry-form" action="https://formsubmit.co/adaptivedetailerving@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="New website inquiry — Adaptive Detailing">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_url" value="https://adaptivedetaildfw.vip/">
+    <form class="inquiry-form" id="inquiry-form" action="https://adaptive-detail-desk.dm101128.workers.dev/api/leads" method="POST">
+      <input type="hidden" name="source" value="adaptivedetaildfw.vip general inquiry">
+      <input type="text" name="website" tabindex="-1" autocomplete="off" hidden>
       <div class="field-row">
-        <label><span>Your name</span><input type="text" name="Name" autocomplete="name" placeholder="First and last name" required></label>
-        <label><span>Phone number</span><input type="tel" name="Phone" autocomplete="tel" placeholder="(817) 555-0123" required></label>
+        <label><span>Your name</span><input type="text" name="name" autocomplete="name" placeholder="First and last name" required></label>
+        <label><span>Phone number</span><input type="tel" name="phone" autocomplete="tel" placeholder="(817) 555-0123" required></label>
       </div>
-      <label><span>What are you interested in?</span><select name="Interest" required><option value="" selected disabled>Select a service</option><option>Full Detail</option><option>Mobile Detailing</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Consultation</option><option>Other</option></select></label>
-      <label><span>Vehicle</span><input type="text" name="Vehicle" placeholder="Year, make, and model (optional)"></label>
-      <label><span>How can we help?</span><textarea name="Message" rows="6" placeholder="Tell us about your vehicle, its condition, and the result you have in mind." required></textarea></label>
+      <label><span>Email address</span><input type="email" name="email" autocomplete="email" placeholder="you@email.com"></label>
+      <label><span>What are you interested in?</span><select name="requestedService" required><option value="" selected disabled>Select a service</option><option>Full Detail</option><option>Mobile Detailing</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Consultation</option><option>Other</option></select></label>
+      <div class="field-row">
+        <label><span>Service address <small>Optional</small></span><input type="text" name="address" autocomplete="street-address" placeholder="Street, city, ZIP"></label>
+        <label><span>Vehicle</span><input type="text" name="vehicle" placeholder="Year, make, and model (optional)"></label>
+      </div>
+      <label><span>How can we help?</span><textarea name="notes" rows="6" placeholder="Tell us about your vehicle, its condition, and the result you have in mind." required></textarea></label>
       <button class="button form-button" type="submit">Send my inquiry <span>↗</span></button>
-      <p class="form-note">Your information is only used to respond to your inquiry. Prefer to talk now? <a href="tel:8176778155">Call or text (817) 677-8155.</a></p>
+      <p class="form-note" aria-live="polite">Your information is only used to respond to your inquiry. Prefer to talk now? <a href="tel:8176778155">Call or text (817) 677-8155.</a></p>
     </form>
   </section>
 
@@ -205,6 +211,54 @@
       }
       strip.appendChild(button);
     }
+  }());
+
+  (function () {
+    const endpoint = "https://adaptive-detail-desk.dm101128.workers.dev/api/leads";
+
+    async function compressedPhoto(file) {
+      if (!file || file.size <= 1500000) return file;
+      const image = await createImageBitmap(file);
+      const scale = Math.min(1, 1280 / Math.max(image.width, image.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(image.width * scale);
+      canvas.height = Math.round(image.height * scale);
+      canvas.getContext("2d").drawImage(image, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise(function (resolve) {
+        canvas.toBlob(resolve, "image/jpeg", 0.72);
+      });
+      image.close();
+      if (!blob) throw new Error("We could not prepare that photo. Please try another image.");
+      return new File([blob], file.name.replace(/\.[^.]+$/, "") + ".jpg", { type: "image/jpeg" });
+    }
+
+    document.querySelectorAll("#mobile-booking-form, #inquiry-form").forEach(function (form) {
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        const button = form.querySelector('button[type="submit"]');
+        const note = form.querySelector(".form-note");
+        const originalButton = button.innerHTML;
+        button.disabled = true;
+        button.textContent = "Sending…";
+        note.textContent = "Securely sending your request…";
+
+        try {
+          const data = new FormData(form);
+          const photo = data.get("photo");
+          if (photo instanceof File && photo.size) data.set("photo", await compressedPhoto(photo));
+          const response = await fetch(endpoint, { method: "POST", body: data });
+          const result = await response.json().catch(function () { return {}; });
+          if (!response.ok || !result.ok) throw new Error(result.error || "Your request could not be sent.");
+          note.textContent = "Request received. We’ll contact you shortly to confirm.";
+          form.reset();
+        } catch (error) {
+          note.textContent = error.message || "Your request could not be sent. Please call or text (817) 677-8155.";
+        } finally {
+          button.disabled = false;
+          button.innerHTML = originalButton;
+        }
+      });
+    });
   }());
 </script>
 </body>

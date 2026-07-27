@@ -80,9 +80,9 @@
   <section class="mobile-booking section" id="mobile-request">
     <div class="mobile-booking-intro">
       <p class="eyebrow">Mobile service request</p>
-      <h2>Pick your<br>Saturday.</h2>
-      <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Saturday appointments are available after 1:00 PM. Send your details and we’ll contact you to confirm.</p>
-      <div class="booking-availability"><span></span><div><strong>Saturday availability</strong><small>Appointments from 1:00 PM onward</small></div></div>
+      <h2>Pick your<br>mobile day.</h2>
+      <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Mobile appointments are available Monday and Thursday from 7:00 AM to 2:00 PM. Send your details and we’ll contact you to confirm.</p>
+      <div class="booking-availability"><span></span><div><strong>Monday &amp; Thursday availability</strong><small>Mobile appointments from 7:00 AM to 2:00 PM</small></div></div>
     </div>
     <form class="mobile-booking-form" id="mobile-booking-form" action="/api/leads" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="source" value="adaptivedetaildfw.vip mobile request">
@@ -100,10 +100,10 @@
       <label><span>Type of job</span><select name="requestedService" required><option value="" selected disabled>Select a service</option><option>Basic Exterior Detail</option><option>Basic Interior Detail</option><option>Full Detail</option><option>Deluxe Detail</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Other / Not sure</option></select></label>
       <fieldset class="booking-fieldset">
         <legend>Preferred date</legend>
-        <p>Next 7 days · Saturday is available</p>
+        <p>Next 7 days · Monday and Thursday are available</p>
         <div class="date-strip" id="mobile-date-strip" aria-label="Available dates"></div>
       </fieldset>
-      <label><span>Preferred time</span><select name="requestedTime" required><option value="" selected disabled>Select a time</option><option>1:00 PM</option><option>2:00 PM</option><option>3:00 PM</option><option>4:00 PM</option><option>5:00 PM</option><option>6:00 PM</option></select></label>
+      <label><span>Preferred time</span><select name="requestedTime" required><option value="" selected disabled>Select a time</option><option>7:00 AM</option><option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option></select></label>
       <label class="photo-upload"><span>Vehicle photo <small>Optional</small></span><input type="file" name="photo" accept="image/*" capture="environment"><b>Take a photo or choose one from your phone</b></label>
       <label><span>Anything else we should know? <small>Optional</small></span><textarea name="notes" rows="4" placeholder="Vehicle condition, access instructions, or special requests"></textarea></label>
       <button class="button form-button" type="submit">Submit mobile request <span>↗</span></button>
@@ -188,10 +188,12 @@
     today.setHours(12, 0, 0, 0);
     const formatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
 
+    let selectedDate = false;
     for (let offset = 0; offset < 7; offset += 1) {
       const date = new Date(today);
       date.setDate(today.getDate() + offset);
-      const isSaturday = date.getDay() === 6;
+      const isAvailable = date.getDay() === 1 || date.getDay() === 4;
+      const isSelected = isAvailable && !selectedDate;
       const value = [
         date.getFullYear(),
         String(date.getMonth() + 1).padStart(2, "0"),
@@ -199,13 +201,22 @@
       ].join("-");
       const button = document.createElement("button");
       button.type = "button";
-      button.className = "booking-day" + (isSaturday ? " available selected" : "");
-      button.disabled = !isSaturday;
-      button.setAttribute("aria-pressed", String(isSaturday));
-      button.innerHTML = "<span>" + formatter.format(date) + "</span><strong>" + date.getDate() + "</strong><small>" + (isSaturday ? "Open" : "—") + "</small>";
-      if (isSaturday) {
-        dateInput.value = value;
+      button.className = "booking-day" + (isAvailable ? " available" : "") + (isSelected ? " selected" : "");
+      button.disabled = !isAvailable;
+      button.setAttribute("aria-pressed", String(isSelected));
+      button.innerHTML = "<span>" + formatter.format(date) + "</span><strong>" + date.getDate() + "</strong><small>" + (isAvailable ? "Open" : "—") + "</small>";
+      if (isAvailable) {
+        if (isSelected) {
+          dateInput.value = value;
+          selectedDate = true;
+        }
         button.addEventListener("click", function () {
+          strip.querySelectorAll(".booking-day.available").forEach(function (day) {
+            day.classList.remove("selected");
+            day.setAttribute("aria-pressed", "false");
+          });
+          button.classList.add("selected");
+          button.setAttribute("aria-pressed", "true");
           dateInput.value = value;
         });
       }

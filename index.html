@@ -84,7 +84,7 @@
       <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Saturday appointments are available after 1:00 PM. Send your details and we’ll contact you to confirm.</p>
       <div class="booking-availability"><span></span><div><strong>Saturday availability</strong><small>Appointments from 1:00 PM onward</small></div></div>
     </div>
-    <form class="mobile-booking-form" id="mobile-booking-form" action="https://adaptive-detail-desk.dm101128.workers.dev/api/leads" method="POST" enctype="multipart/form-data">
+    <form class="mobile-booking-form" id="mobile-booking-form" action="/api/leads" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="source" value="adaptivedetaildfw.vip mobile request">
       <input type="text" name="website" tabindex="-1" autocomplete="off" hidden>
       <input type="hidden" name="requestedDate" id="mobile-date">
@@ -155,7 +155,7 @@
       </aside>
       <div class="inquiry-photo"><img src="10-Photo-10.jpg" alt="Professionally detailed blue vehicle interior" loading="lazy"></div>
     </div>
-    <form class="inquiry-form" id="inquiry-form" action="https://adaptive-detail-desk.dm101128.workers.dev/api/leads" method="POST">
+    <form class="inquiry-form" id="inquiry-form" action="/api/leads" method="POST">
       <input type="hidden" name="source" value="adaptivedetaildfw.vip general inquiry">
       <input type="text" name="website" tabindex="-1" autocomplete="off" hidden>
       <div class="field-row">
@@ -214,7 +214,7 @@
   }());
 
   (function () {
-    const endpoint = "https://adaptive-detail-desk.dm101128.workers.dev/api/leads";
+    const endpoint = "/api/leads";
 
     async function compressedPhoto(file) {
       if (!file || file.size <= 1500000) return file;

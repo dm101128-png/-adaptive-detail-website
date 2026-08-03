@@ -81,8 +81,8 @@
     <div class="mobile-booking-intro">
       <p class="eyebrow">Mobile service request</p>
       <h2>Pick your<br>mobile day.</h2>
-      <p>Jobber is temporarily unavailable, but you can still request mobile detailing here. Mobile appointments are available Monday and Thursday from 7:00 AM to 2:00 PM. Send your details and we’ll contact you to confirm.</p>
-      <div class="booking-availability"><span></span><div><strong>Monday &amp; Thursday availability</strong><small>Mobile appointments from 7:00 AM to 2:00 PM</small></div></div>
+      <p>Mobile detailing is available Mondays and Thursdays throughout the DFW Metroplex. Select an available date below and submit your information to request an appointment.</p>
+      <div class="booking-availability"><span></span><div><strong>Monday &amp; Thursday Mobile Availability</strong><small>Serving the DFW Metroplex · 7:00 AM to 2:00 PM</small></div></div>
     </div>
     <form class="mobile-booking-form" id="mobile-booking-form" action="/api/leads" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="source" value="adaptivedetaildfw.vip mobile request">
@@ -100,8 +100,17 @@
       <label><span>Type of job</span><select name="requestedService" required><option value="" selected disabled>Select a service</option><option>Basic Exterior Detail</option><option>Basic Interior Detail</option><option>Full Detail</option><option>Deluxe Detail</option><option>Ceramic Coating</option><option>Paint Correction</option><option>Other / Not sure</option></select></label>
       <fieldset class="booking-fieldset">
         <legend>Preferred date</legend>
-        <p>Next 7 days · Monday and Thursday are available</p>
-        <div class="date-strip" id="mobile-date-strip" aria-label="Available dates"></div>
+        <p>Only Mondays and Thursdays are available, up to six months ahead.</p>
+        <div class="calendar" id="mobile-calendar">
+          <div class="calendar-header">
+            <button type="button" class="calendar-nav" id="calendar-prev" aria-label="Previous month">‹</button>
+            <strong id="calendar-month-label"></strong>
+            <button type="button" class="calendar-nav" id="calendar-next" aria-label="Next month">›</button>
+          </div>
+          <div class="calendar-weekdays" aria-hidden="true"><span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span></div>
+          <div class="calendar-grid" id="calendar-grid" role="grid" aria-label="Available mobile service dates"></div>
+        </div>
+        <p class="calendar-selected" id="calendar-selected-label" aria-live="polite"></p>
       </fieldset>
       <label><span>Preferred time</span><select name="requestedTime" required><option value="" selected disabled>Select a time</option><option>7:00 AM</option><option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option><option>11:00 AM</option><option>12:00 PM</option><option>1:00 PM</option><option>2:00 PM</option></select></label>
       <label class="photo-upload"><span>Vehicle photo <small>Optional</small></span><input type="file" name="photo" accept="image/*" capture="environment"><b>Take a photo or choose one from your phone</b></label>
@@ -127,6 +136,16 @@
     <figure class="work-wide"><img src="5-Photo-5.jpg" alt="Adaptive Detailing hand washing a classic Chevrolet" loading="lazy"><figcaption>Hands-on care</figcaption></figure>
     <figure><img src="8-Photo-8.jpg" alt="Restored classic car interior after detailing" loading="lazy"><figcaption>Interior precision</figcaption></figure>
     <figure><img src="11-Photo-11.jpg" alt="Polished blue performance vehicle with a spotless interior" loading="lazy"><figcaption>Show-ready finish</figcaption></figure>
+  </section>
+
+  <section class="showcase section" id="showcase" aria-labelledby="showcase-title">
+    <div class="specialty-heading"><p class="eyebrow dark">Client showcase</p><h2 id="showcase-title">Fresh off the shop.<br>Ready for the show.</h2><p>From daily drivers to showstopping supercars, we love seeing client vehicles turn heads at DFW car meets after a full detail.</p></div>
+    <div class="showcase-grid">
+      <figure><img src="12-Photo-12.jpg" alt="Gold Lamborghini Huracán after a full exterior detail" loading="lazy"><figcaption>Chrome gold finish</figcaption></figure>
+      <figure><img src="13-Photo-13.jpg" alt="Close-up of a gold Lamborghini Huracán hood reflecting the sky" loading="lazy"><figcaption>Mirror-deep reflection</figcaption></figure>
+      <figure><img src="14-Photo-14.jpg" alt="White and red Lamborghini Huracán at a Grapevine car meet" loading="lazy"><figcaption>Grapevine car meet</figcaption></figure>
+      <figure><img src="15-Photo-15.jpg" alt="White and blue Lamborghini Huracán STO at a car show" loading="lazy"><figcaption>Show-ready and sharp</figcaption></figure>
+    </div>
   </section>
 
   <section class="about section" id="about">
@@ -179,49 +198,133 @@
   <footer><a class="brand" href="#top"><img src="adaptive-detailing-logo.jpg" alt=""><span>Adaptive <b>Detailing</b></span></a><p>Mobile details · We come to you</p><p>© 2026 Adaptive Detailing</p></footer>
 </main>
 <script>
+  function mobileDateRange() {
+    const min = new Date();
+    min.setHours(0, 0, 0, 0);
+    const max = new Date(min);
+    max.setMonth(max.getMonth() + 6);
+    return { min: min, max: max };
+  }
+
+  function isMobileDateAvailable(date) {
+    const range = mobileDateRange();
+    const day = date.getDay();
+    return (day === 1 || day === 4) && date >= range.min && date <= range.max;
+  }
+
+  function isMobileDateValueValid(value) {
+    if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+    const parts = value.split("-").map(Number);
+    const date = new Date(parts[0], parts[1] - 1, parts[2]);
+    if (date.getFullYear() !== parts[0] || date.getMonth() !== parts[1] - 1 || date.getDate() !== parts[2]) return false;
+    return isMobileDateAvailable(date);
+  }
+
   (function () {
-    const strip = document.getElementById("mobile-date-strip");
+    const grid = document.getElementById("calendar-grid");
+    const monthLabel = document.getElementById("calendar-month-label");
+    const prevButton = document.getElementById("calendar-prev");
+    const nextButton = document.getElementById("calendar-next");
+    const selectedLabel = document.getElementById("calendar-selected-label");
     const dateInput = document.getElementById("mobile-date");
-    if (!strip || !dateInput) return;
+    if (!grid || !dateInput) return;
 
-    const today = new Date();
-    today.setHours(12, 0, 0, 0);
-    const formatter = new Intl.DateTimeFormat("en-US", { weekday: "short" });
+    const range = mobileDateRange();
+    const monthFormatter = new Intl.DateTimeFormat("en-US", { month: "long", year: "numeric" });
+    const dayFormatter = new Intl.DateTimeFormat("en-US", { weekday: "long", month: "long", day: "numeric" });
 
-    let selectedDate = false;
-    for (let offset = 0; offset < 7; offset += 1) {
-      const date = new Date(today);
-      date.setDate(today.getDate() + offset);
-      const isAvailable = date.getDay() === 1 || date.getDay() === 4;
-      const isSelected = isAvailable && !selectedDate;
-      const value = [
+    function toValue(date) {
+      return [
         date.getFullYear(),
         String(date.getMonth() + 1).padStart(2, "0"),
         String(date.getDate()).padStart(2, "0")
       ].join("-");
-      const button = document.createElement("button");
-      button.type = "button";
-      button.className = "booking-day" + (isAvailable ? " available" : "") + (isSelected ? " selected" : "");
-      button.disabled = !isAvailable;
-      button.setAttribute("aria-pressed", String(isSelected));
-      button.innerHTML = "<span>" + formatter.format(date) + "</span><strong>" + date.getDate() + "</strong><small>" + (isAvailable ? "Open" : "—") + "</small>";
-      if (isAvailable) {
-        if (isSelected) {
-          dateInput.value = value;
-          selectedDate = true;
-        }
-        button.addEventListener("click", function () {
-          strip.querySelectorAll(".booking-day.available").forEach(function (day) {
-            day.classList.remove("selected");
-            day.setAttribute("aria-pressed", "false");
-          });
-          button.classList.add("selected");
-          button.setAttribute("aria-pressed", "true");
-          dateInput.value = value;
-        });
-      }
-      strip.appendChild(button);
     }
+
+    function findEarliestAvailable() {
+      const date = new Date(range.min);
+      while (!isMobileDateAvailable(date)) date.setDate(date.getDate() + 1);
+      return date;
+    }
+
+    let selectedDate = findEarliestAvailable();
+    let viewYear = selectedDate.getFullYear();
+    let viewMonth = selectedDate.getMonth();
+    dateInput.value = toValue(selectedDate);
+
+    function updateSelectedLabel() {
+      selectedLabel.textContent = selectedDate ? "Selected date: " + dayFormatter.format(selectedDate) : "Select an available date.";
+    }
+
+    function render() {
+      grid.innerHTML = "";
+      const firstOfMonth = new Date(viewYear, viewMonth, 1);
+      monthLabel.textContent = monthFormatter.format(firstOfMonth);
+
+      const startOffset = firstOfMonth.getDay();
+      const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (let i = 0; i < startOffset; i += 1) {
+        const filler = document.createElement("span");
+        filler.className = "calendar-day";
+        filler.setAttribute("aria-hidden", "true");
+        grid.appendChild(filler);
+      }
+
+      for (let day = 1; day <= daysInMonth; day += 1) {
+        const date = new Date(viewYear, viewMonth, day);
+        const available = isMobileDateAvailable(date);
+        const isSelected = selectedDate && toValue(date) === toValue(selectedDate);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "calendar-day day-cell" + (available ? " available" : "") + (isSelected ? " selected" : "");
+        button.disabled = !available;
+        button.setAttribute("role", "gridcell");
+        button.setAttribute("aria-pressed", String(isSelected));
+        button.setAttribute("aria-label", dayFormatter.format(date) + (available ? "" : ", unavailable"));
+        button.textContent = String(day);
+        if (available) {
+          button.addEventListener("click", function () {
+            selectedDate = date;
+            dateInput.value = toValue(date);
+            updateSelectedLabel();
+            render();
+          });
+        }
+        grid.appendChild(button);
+      }
+
+      const prevMonthEnd = new Date(viewYear, viewMonth, 0);
+      prevButton.disabled = prevMonthEnd < new Date(range.min.getFullYear(), range.min.getMonth(), 1);
+      const nextMonthStart = new Date(viewYear, viewMonth + 1, 1);
+      nextButton.disabled = nextMonthStart > range.max;
+    }
+
+    prevButton.addEventListener("click", function () {
+      viewMonth -= 1;
+      if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+      render();
+    });
+    nextButton.addEventListener("click", function () {
+      viewMonth += 1;
+      if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+      render();
+    });
+
+    const form = dateInput.closest("form");
+    if (form) {
+      form.addEventListener("reset", function () {
+        selectedDate = findEarliestAvailable();
+        viewYear = selectedDate.getFullYear();
+        viewMonth = selectedDate.getMonth();
+        dateInput.value = toValue(selectedDate);
+        updateSelectedLabel();
+        render();
+      });
+    }
+
+    updateSelectedLabel();
+    render();
   }());
 
   (function () {
@@ -249,6 +352,14 @@
         const button = form.querySelector('button[type="submit"]');
         const note = form.querySelector(".form-note");
         const originalButton = button.innerHTML;
+        if (form.id === "mobile-booking-form") {
+          const requestedDate = form.querySelector("#mobile-date");
+          if (!requestedDate || !isMobileDateValueValid(requestedDate.value)) {
+            note.textContent = "Please select an available Monday or Thursday date.";
+            return;
+          }
+        }
+
         button.disabled = true;
         button.textContent = "Sending…";
         note.textContent = "Securely sending your request…";

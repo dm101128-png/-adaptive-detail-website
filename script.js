@@ -67,7 +67,7 @@
       event.preventDefault(); const button = form.querySelector('button[type="submit"]'); const note = form.querySelector('.form-note'); const original = button.innerHTML;
       button.disabled = true; button.textContent = 'Sending…'; note.textContent = 'Securely sending your request…';
       try { const data = new FormData(form); const photo = data.get('photo'); if (photo instanceof File && photo.size) data.set('photo', await compressedPhoto(photo)); const response = await fetch('/api/leads', { method:'POST', body:data }); const result = await response.json().catch(() => ({})); if (!response.ok || !result.ok) throw new Error(result.error || 'Your request could not be sent.'); note.textContent = 'Request received. We’ll contact you shortly to confirm.'; form.reset(); }
-      catch (error) { note.textContent = error.message || 'Please call or text (817) 677-8155.'; }
+      catch (error) { note.textContent = error.message || 'Please call or text (817) 454-2860.'; }
       finally { button.disabled = false; button.innerHTML = original; }
     });
   });

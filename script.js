@@ -16,7 +16,9 @@
     const selectedLabel = document.getElementById('calendar-selected-label');
     const prev = document.getElementById('calendar-prev');
     const next = document.getElementById('calendar-next');
-    const min = new Date(); min.setHours(0, 0, 0, 0);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const bookingStart = new Date(2026, 8, 21);
+    const min = today > bookingStart ? today : bookingStart;
     const max = new Date(min); max.setMonth(max.getMonth() + 6);
     const available = d => (d.getDay() === 1 || d.getDay() === 4) && d >= min && d <= max;
     const value = d => [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-');
@@ -50,6 +52,20 @@
   const requestedService = new URLSearchParams(window.location.search).get('service');
   const serviceSelect = document.querySelector('#inquiry-form select[name="requestedService"]');
   if (serviceSelect && serviceMap[requestedService]) serviceSelect.value = serviceMap[requestedService];
+
+  const saturdaySelect = document.getElementById('saturday-date');
+  if (saturdaySelect) {
+    const start = new Date(); start.setHours(0, 0, 0, 0);
+    while (start.getDay() !== 6) start.setDate(start.getDate() + 1);
+    const formatter = new Intl.DateTimeFormat('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+    for (let week = 0; week < 26; week += 1) {
+      const date = new Date(start); date.setDate(start.getDate() + week * 7);
+      const option = document.createElement('option');
+      option.value = [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-');
+      option.textContent = formatter.format(date);
+      saturdaySelect.appendChild(option);
+    }
+  }
 
   async function compressedPhoto(file) {
     if (!file || file.size <= 1500000 || typeof createImageBitmap !== 'function') return file;

@@ -78,11 +78,17 @@
     return blob ? new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type:'image/jpeg' }) : file;
   }
 
+  const boundLeadForms = window.__adaptiveBoundLeadForms || new WeakSet();
+  window.__adaptiveBoundLeadForms = boundLeadForms;
+
   document.querySelectorAll('#mobile-booking-form, #inquiry-form').forEach(function (form) {
+    if (boundLeadForms.has(form)) return;
+    boundLeadForms.add(form);
+
     form.addEventListener('submit', async function (event) {
       event.preventDefault(); const button = form.querySelector('button[type="submit"]'); const note = form.querySelector('.form-note'); const original = button.innerHTML;
       button.disabled = true; button.textContent = 'Sending…'; note.textContent = 'Securely sending your request…';
-      try { const data = new FormData(form); const photo = data.get('photo'); if (photo instanceof File && photo.size) data.set('photo', await compressedPhoto(photo)); const response = await fetch('/api/leads', { method:'POST', body:data }); const result = await response.json().catch(() => ({})); if (!response.ok || !result.ok) throw new Error(result.error || 'Your request could not be sent.'); note.textContent = 'Request received. We’ll contact you shortly to confirm.'; form.reset(); }
+      try { const data = new FormData(form); const photo = data.get('photo'); if (photo instanceof File && photo.size) data.set('photo', await compressedPhoto(photo)); const response = await fetch('/api/leads', { method:'POST', body:data }); const result = await response.json().catch(() => ({})); if (!response.ok || !result.ok) throw new Error(result.error || 'Your request could not be sent.'); try { window.AdaptiveGoogleAds?.recordLeadConversion(response, result); } catch (_) {} note.textContent = 'Request received. We’ll contact you shortly to confirm.'; form.reset(); }
       catch (error) { note.textContent = error.message || 'Please call or text (817) 454-2860.'; }
       finally { button.disabled = false; button.innerHTML = original; }
     });
